@@ -3,7 +3,7 @@
 
   vars:
     JANUS_DIR: "/home/pi/janus-gateway"
-    JANUS_STR_CONFIG_FILE: "/opt/janus/etc/janus/janus.plugin.streaming.jcfg"
+    JANUS_CONFIG_DIR: "/opt/janus/etc/janus"
 
   tasks:
 
@@ -118,25 +118,23 @@
       target: install
     become: yes
 
-  - name: Install default config files
-    make:
-      chdir: "{{ JANUS_DIR }}"
-      target: configs
+  - name: Copies Janus base config
+    copy:
+      src: janus.jcfg
+      dest: "{{ JANUS_CONFIG_DIR }}/janus.jcfg"
+      mode: 0644
     become: yes
 
-  - name: Save Janus configuration for GStreamer
-    blockinfile:
-      path: "{{ JANUS_STR_CONFIG_FILE }}"
-      block: |
-        gst-rpwc: {
-            type = "rtp"
-            id = 99
-            description = "RPWC H264 live stream from gstreamer"
-            audio = false
-            video = true
-            videoport = 8004
-            videopt = 96
-            videortpmap = "H264/90000"
-            videofmtp = "profile-level-id=42e01f\;packetization-mode=1"
-        }
+  - name: Copies Janus streaming config
+    copy:
+      src: janus.plugin.streaming.jcfg
+      dest: "{{ JANUS_CONFIG_DIR }}/janus.plugin.streaming.jcfg"
+      mode: 0644
+    become: yes
+
+  - name: Copies Janus HTTP config
+    copy:
+      src: janus.transport.http.jcfg
+      dest: "{{ JANUS_CONFIG_DIR }}/janus.transport.http.jcfg"
+      mode: 0644
     become: yes

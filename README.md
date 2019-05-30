@@ -10,3 +10,4 @@ raspivid --verbose --nopreview --width 800 --height 600 --framerate 30 --qp 20 -
 //In MAC
 gst-launch-1.0 udpsrc port=9004 ! application/x-rtp, payload=96 ! rtph264depay ! avdec_h264 ! fpsdisplaysink sync=false text-overlay=false
 
+You can generate full Janus config with make configs

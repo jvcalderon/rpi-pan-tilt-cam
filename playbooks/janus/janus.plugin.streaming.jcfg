@@ -1,0 +1,11 @@
+gst-rpwc: {
+    type = "rtp"
+    id = 99
+    description = "Raspberry CAM"
+    audio = false
+    video = true
+    videoport = 8004
+    videopt = 96
+    videortpmap = "H264/90000"
+    videofmtp = "profile-level-id=42e01f\;packetization-mode=1"
+}
