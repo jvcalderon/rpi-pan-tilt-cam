@@ -1,0 +1,41 @@
+---
+- hosts: rpis
+
+  vars:
+    NODEJS_VERSION: "10.6.0"
+    NODEJS_PKG_NAME: "node-v{{ NODEJS_VERSION }}-linux-armv6l"
+    NODEJS_PACKAGE_DIR: "/tmp"
+    NODEJS_LIB_DIR: "/usr/local/lib"
+    BIN_DIR: "/usr/local/bin"
+
+  tasks:
+
+  - name: Download NodeJS package for armv6
+    get_url:
+      url: "https://nodejs.org/dist/v{{ NODEJS_VERSION }}/{{ NODEJS_PKG_NAME }}.tar.xz"
+      dest: "{{ NODEJS_PACKAGE_DIR }}"
+    become: yes
+
+  - name: Unarchive NodeJS binaries
+    unarchive:
+      src: "{{NODEJS_PACKAGE_DIR}}/{{ NODEJS_PKG_NAME }}.tar.xz"
+      dest: "{{ NODEJS_LIB_DIR }}"
+      remote_src: yes
+      owner: root
+      group: staff
+      mode: 0775
+    become: yes
+
+  - name: Symlink to NodeJS binary
+    file:
+      src: "{{ NODEJS_LIB_DIR }}/{{ NODEJS_PKG_NAME }}/bin/node"
+      dest: "{{ BIN_DIR }}/node"
+      state: link
+    become: yes
+
+  - name: Symlink to NPM binary
+    file:
+      src: "{{ NODEJS_LIB_DIR }}/{{ NODEJS_PKG_NAME }}/bin/npm"
+      dest: "{{ BIN_DIR }}/npm"
+      state: link
+    become: yes

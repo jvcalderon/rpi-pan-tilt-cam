@@ -1,0 +1,142 @@
+---
+- hosts: rpis
+
+  vars:
+    JANUS_DIR: "/home/pi/janus-gateway"
+    JANUS_STR_CONFIG_FILE: "/opt/janus/etc/janus/janus.plugin.streaming.jcfg"
+
+  tasks:
+
+  - name: Install libmicrohttpd
+    apt:
+      name: libmicrohttpd-dev
+    become: yes
+
+  - name: Install libjansson
+    apt:
+      name: libjansson-dev
+    become: yes
+
+  - name: Install libnice
+    apt:
+      name: libnice-dev
+    become: yes
+
+  - name: Install libssl
+    apt:
+      name: libssl-dev
+    become: yes
+
+  - name: Install libsrtp
+    apt:
+      name: libsrtp-dev
+    become: yes
+
+  - name: Install libsofia-sip-ua
+    apt:
+      name: libsofia-sip-ua-dev
+    become: yes
+
+  - name: Install libglib
+    apt:
+      name: libglib2.0-dev
+    become: yes
+
+  - name: Install libopus
+    apt:
+      name: libopus-dev
+    become: yes
+
+  - name: Install libogg
+    apt:
+      name: libogg-dev
+    become: yes
+
+  - name: Install libini-config
+    apt:
+      name: libini-config-dev
+    become: yes
+
+  - name: Install libcollection
+    apt:
+      name: libcollection-dev
+    become: yes
+
+  - name: Install pkg-config
+    apt:
+      name: pkg-config
+    become: yes
+
+  - name: Install gengetopt
+    apt:
+      name: gengetopt
+    become: yes
+
+  - name: Install libtool
+    apt:
+      name: libtool
+    become: yes
+
+  - name: Install automake
+    apt:
+      name: automake
+    become: yes
+
+  - name: Install dh-autoreconf
+    apt:
+      name: dh-autoreconf
+    become: yes
+
+  - name: Install libconfig-dev
+    apt:
+      name: libconfig-dev
+    become: yes
+
+  - name: Install libsrtp2-dev
+    apt:
+      name: libsrtp2-dev
+    become: yes
+
+  - name: Download Janus Gateway
+    git:
+      repo: "https://github.com/meetecho/janus-gateway.git"
+      dest: "{{ JANUS_DIR }}"
+
+  - name: Prepare Janus installation by script execution
+    command: 'bash -lc "cd {{ JANUS_DIR }} && ./autogen.sh"'
+
+  - name: Configure Janus installation
+    command: 'bash -lc "cd {{ JANUS_DIR }} && ./configure --disable-websockets --disable-data-channels --disable-rabbitmq --disable-docs --prefix=/opt/janus"'
+
+  - name: Make Janus
+    make:
+      chdir: "{{ JANUS_DIR }}"
+
+  - name: Install Janus
+    make:
+      chdir: "{{ JANUS_DIR }}"
+      target: install
+    become: yes
+
+  - name: Install default config files
+    make:
+      chdir: "{{ JANUS_DIR }}"
+      target: configs
+    become: yes
+
+  - name: Save Janus configuration for GStreamer
+    blockinfile:
+      path: "{{ JANUS_STR_CONFIG_FILE }}"
+      block: |
+        gst-rpwc: {
+            type = "rtp"
+            id = 99
+            description = "RPWC H264 live stream from gstreamer"
+            audio = false
+            video = true
+            videoport = 8004
+            videopt = 96
+            videortpmap = "H264/90000"
+            videofmtp = "profile-level-id=42e01f\;packetization-mode=1"
+        }
+    become: yes

@@ -1,0 +1,32 @@
+---
+- hosts: rpis
+
+  vars:
+    CONFIG_FILE: "/etc/dhcpcd.conf"
+    SUPPLICANT_FILE: "/etc/wpa_supplicant/wpa_supplicant.conf"
+
+  tasks:
+
+  - name: Include network config vars
+    include_vars:
+      file: params.yml
+      name: params
+
+  - name: Save network credentials
+    blockinfile:
+      path: "{{ SUPPLICANT_FILE }}"
+      block: |
+        network={
+            ssid="{{ params.wlan.ssid }}"
+            psk="{{ params.wlan.passphrase }}"
+        }
+    become: yes
+
+  - name: Configure wlan network interface
+    blockinfile:
+      path: "{{ CONFIG_FILE }}"
+      block: |
+        interface wlan0
+        static ip_address={{ params.wlan.address }}
+        static routers={{ params.wlan.gateway }}
+    become: yes

@@ -1,0 +1,2 @@
+[rpis]
+rpi1-local  ansible_connection=ssh

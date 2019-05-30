@@ -1,0 +1,22 @@
+---
+- hosts: rpis
+
+  vars:
+    CONFIG_FILE: "/boot/config.txt"
+    GPU_MEM: "128"
+
+  tasks:
+
+  - name: Allocate memory for GPU
+    lineinfile:
+      path: "{{ CONFIG_FILE }}"
+      regexp: '^gpu_mem='
+      line: "gpu_mem={{ GPU_MEM }}"
+    become: yes
+
+  - name: Activate camera
+    lineinfile:
+      path: "{{ CONFIG_FILE }}"
+      regexp: '^start_x='
+      line: "start_x=1"
+    become: yes

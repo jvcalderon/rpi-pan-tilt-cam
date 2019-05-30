@@ -1,0 +1,9 @@
+---
+- hosts: rpis
+
+  tasks:
+
+  - name: Install PIGPIO (C library)
+    apt:
+      name: pigpio
+    become: yes

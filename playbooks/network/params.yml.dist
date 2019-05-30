@@ -1,0 +1,5 @@
+wlan:
+  address: "__IP__"
+  gateway: "192.168.1.1"
+  passphrase: "__PASSPHRASE__"
+  ssid: "__SSID__"
