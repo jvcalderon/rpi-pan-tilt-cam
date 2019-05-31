@@ -6,3 +6,4 @@
 - import_playbook: playbooks/janus/janus.yml
 - import_playbook: playbooks/nginx.yml
 - import_playbook: playbooks/streaming/streaming.yml
+- import_playbook: playbooks/www/www.yml

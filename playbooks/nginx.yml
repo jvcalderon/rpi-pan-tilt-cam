@@ -7,7 +7,3 @@
     apt:
       name: nginx
     become: yes
-
-  - name: Exposes Janus demos in public's Nginx folder
-    command: 'cp -r /opt/janus/share/janus/demos/ /var/www/html/demos'
-    become: yes
