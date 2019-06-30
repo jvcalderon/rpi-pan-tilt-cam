@@ -1,0 +1,28 @@
+---
+- hosts: rpis
+
+  vars:
+    RC_PATH: "/etc/rc.local"
+    APP_PATH: "/home/pi/rpi"
+    PM2_PATH: "/usr/local/lib/node-v10.6.0-linux-armv6l/bin/pm2"
+
+  tasks:
+
+  - name: Sets config to start daemons on system start
+    blockinfile:
+      path: "{{ RC_PATH }}"
+      block: |
+        /bin/sh /home/pi/raspivid.sh > /dev/null &
+        /bin/sh /home/pi/janus.sh > /dev/null &
+      insertbefore: "exit 0"
+    become: yes
+
+  - name: Starts Node application with PM2
+    command: 'bash -lc "{{ PM2_PATH }} start {{ APP_PATH }}/process.json"'
+    become: yes
+
+  - name: Generates startup script
+    command: 'bash -lc "{{ PM2_PATH }} startup"'
+
+  - name: Saves the startup
+    command: 'bash -lc "{{ PM2_PATH }} save"'

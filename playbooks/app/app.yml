@@ -1,0 +1,24 @@
+---
+- hosts: rpis
+
+  vars:
+    APP_PATH: "/home/pi/rpi"
+    RC_PATH: "/etc/rc.local"
+
+  tasks:
+
+  - name: Create app directory if it does not exist
+    file:
+      path: "{{ APP_PATH }}"
+      state: directory
+      mode: 0755
+
+  - name: Copy NodeJS application in remote folder
+    copy:
+      src: "."
+      dest: "{{ APP_PATH }}"
+      mode: "preserve"
+
+  - name: Install app dependencies
+    npm:
+      path: "{{ APP_PATH }}"

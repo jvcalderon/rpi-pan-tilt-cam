@@ -4,6 +4,6 @@
 - import_playbook: playbooks/gpio.yml
 - import_playbook: playbooks/node.yml
 - import_playbook: playbooks/janus/janus.yml
-- import_playbook: playbooks/nginx.yml
 - import_playbook: playbooks/streaming/streaming.yml
-- import_playbook: playbooks/www/www.yml
+- import_playbook: playbooks/app/app.yml
+- import_playbook: playbooks/init.yml

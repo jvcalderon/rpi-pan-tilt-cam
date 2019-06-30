@@ -1,6 +1,4 @@
-'use strict'
-
-const server = `http://192.168.1.3:8088/janus`
+const server = `http://${window.location.hostname}:8088/janus`
 const streamId = 99
 let streaming = null
 

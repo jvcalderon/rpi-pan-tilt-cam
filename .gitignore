@@ -1,3 +1,4 @@
 *.retry
 /playbooks/network/params.yml
-/inventory.dist
+/inventory
+/playbooks/app/src/node_modules/

@@ -1,0 +1,8 @@
+{
+  "apps": [
+    {
+      "name": "rpi-cam-pan-tilt",
+      "script": "/home/pi/rpi/index.js"
+    }
+  ]
+}

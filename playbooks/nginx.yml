@@ -1,9 +1,0 @@
----
-- hosts: rpis
-
-  tasks:
-
-  - name: Install NGINX
-    apt:
-      name: nginx
-    become: yes

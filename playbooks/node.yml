@@ -39,3 +39,9 @@
       dest: "{{ BIN_DIR }}/npm"
       state: link
     become: yes
+
+  - name: Install PM2
+    npm:
+      name: pm2
+      global: yes
+    become: yes

@@ -1,0 +1,20 @@
+{
+  "name": "rpi-cam",
+  "version": "0.0.0",
+  "description": "Handles RPI cam",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Rpi",
+    "cam"
+  ],
+  "author": "José Vte. Calderón",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pigpio": "^1.2.2",
+    "socket.io": "^2.2.0"
+  }
+}
